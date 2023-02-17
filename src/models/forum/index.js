@@ -11,8 +11,7 @@ const forumQuestionSchema = new mongoose.model("forumQuestion", mongoose.Schema(
 const forumAnswerSchema = new mongoose.model("forumAnswer", mongoose.Schema({
     questionId: { type: String, trim: true },
     answer: { type: String, trim: true },
-    userId: { type: String, trim: true },
-    subCategory: { type: String, trim: true },
+    userId: { type: String, trim: true }
 }, {
     timestamps: true
 }));

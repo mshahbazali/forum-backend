@@ -10,5 +10,9 @@ const httpStatus = {
     manyRequests: 429,
     serverError: 500,
 }
+const hashSaltRounds = 10
+const dataBaseUrl = process.env.DATABASE_URL;
+const port = process.env.PORT
+const jwtKey = process.env.JWT_KEY
 
-module.exports = { httpStatus }
+module.exports = { httpStatus, hashSaltRounds, dataBaseUrl, port, jwtKey }
