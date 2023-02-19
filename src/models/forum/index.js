@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const forumQuestionSchema = new mongoose.model("forumQuestion", mongoose.Schema({
     title: { type: String, trim: true },
-    discription: { type: String, trim: true },
+    description: { type: String, trim: true },
     category: { type: String, trim: true },
     subCategory: { type: String, trim: true },
     userId: { type: String, trim: true }
