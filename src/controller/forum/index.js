@@ -2,6 +2,8 @@ const { httpStatus } = require("../../config");
 const {
   forumQuestionSchema,
   forumAnswerSchema,
+  upVoteSchema,
+  downVoteSchema,
 } = require("../../models/forum");
 
 const getAllForum = async (req, res) => {
@@ -95,6 +97,54 @@ const userCreatedForum = async (req, res) => {
     .catch((err) => res.status(httpStatus.notFound).send({ error: err }));
 };
 
+const createUpVote = async (req, res) => {
+  req.body.userId = req.user._id;
+  const createUpVote = new upVoteSchema(req.body);
+  await createUpVote
+    .save()
+    .then((payload) => {
+      res.status(httpStatus.created).send({
+        message: "Up Vote Created",
+        data: payload,
+      });
+    })
+    .catch((err) => console.log(err));
+};
+const createDownVote = async (req, res) => {
+  req.body.userId = req.user._id;
+  const createUpVote = new downVoteSchema(req.body);
+  await createUpVote
+    .save()
+    .then((payload) => {
+      res.status(httpStatus.created).send({
+        message: "Down Vote Created",
+        data: payload,
+      });
+    })
+    .catch((err) => console.log(err));
+};
+
+const getUpVote = async (req, res) => {
+  await upVoteSchema
+    .find({ questionId: req.headers.questionid })
+    .then((payload) => {
+      console.log(payload);
+      res.status(httpStatus.accepted).send({
+        data: payload.length,
+      });
+    })
+    .catch((err) => console.log(err));
+};
+const getDownVote = async (req, res) => {
+  await downVoteSchema
+    .find({ questionId: req.headers.questionid })
+    .then((payload) => {
+      res.status(httpStatus.accepted).send({
+        data: payload.length,
+      });
+    })
+    .catch((err) => console.log(err));
+};
 module.exports = {
   getAllForum,
   create,
@@ -104,4 +154,8 @@ module.exports = {
   getCategoryCount,
   getCategoryByName,
   userCreatedForum,
+  createUpVote,
+  createDownVote,
+  getDownVote,
+  getUpVote,
 };

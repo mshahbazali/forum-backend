@@ -8,6 +8,10 @@ const {
   getCategoryCount,
   getCategoryByName,
   userCreatedForum,
+  createDownVote,
+  createUpVote,
+  getUpVote,
+  getDownVote,
 } = require("../../controller/forum");
 const { getUserInfoFromToken } = require("../../middlewares/auth");
 const {
@@ -27,5 +31,9 @@ router.post(
 );
 router.get("/getcategorycount", getCategoryCount);
 router.get("/getcategorybyname", getCategoryByName);
-router.get("/usercreatedforum",getUserInfoFromToken, userCreatedForum);
+router.get("/usercreatedforum", getUserInfoFromToken, userCreatedForum);
+router.post("/createupvote", getUserInfoFromToken, createUpVote);
+router.post("/createdownvote", getUserInfoFromToken, createDownVote);
+router.get("/getupvote", getUpVote);
+router.get("/getdownvote", getDownVote);
 module.exports = router;
