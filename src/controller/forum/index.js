@@ -4,6 +4,7 @@ const {
   forumAnswerSchema,
   upVoteSchema,
   downVoteSchema,
+  commentSchema,
 } = require("../../models/forum");
 
 const getAllForum = async (req, res) => {
@@ -145,6 +146,30 @@ const getDownVote = async (req, res) => {
     })
     .catch((err) => console.log(err));
 };
+
+const createComment = async (req, res) => {
+  req.body.userId = req.user._id;
+  const createComment = new commentSchema(req.body);
+  await createComment
+    .save()
+    .then((payload) => {
+      res.status(httpStatus.created).send({
+        message: "Comment created",
+        data: payload,
+      });
+    })
+    .catch((err) => console.log(err));
+};
+const getComment = async (req, res) => {
+  await commentSchema
+    .find({ answerId: { $in: req.headers.answerid } })
+    .then((payload) => {
+      res.status(httpStatus.accepted).send({
+        data: payload,
+      });
+    })
+    .catch((err) => res.status(httpStatus.notFound).send({ error: err }));
+};
 module.exports = {
   getAllForum,
   create,
@@ -158,4 +183,6 @@ module.exports = {
   createDownVote,
   getDownVote,
   getUpVote,
+  createComment,
+  getComment,
 };

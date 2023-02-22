@@ -53,9 +53,24 @@ const downVoteSchema = new mongoose.model(
   )
 );
 
+const commentSchema = new mongoose.model(
+  "comment",
+  mongoose.Schema(
+    {
+      answerId: { type: String, trim: true },
+      userId: { type: String, trim: true },
+      comment: { type: String, trim: true },
+    },
+    {
+      timestamps: true,
+    }
+  )
+);
+
 module.exports = {
   forumQuestionSchema,
   forumAnswerSchema,
   upVoteSchema,
   downVoteSchema,
+  commentSchema,
 };

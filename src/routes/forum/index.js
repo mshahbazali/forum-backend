@@ -12,6 +12,8 @@ const {
   createUpVote,
   getUpVote,
   getDownVote,
+  createComment,
+  getComment,
 } = require("../../controller/forum");
 const { getUserInfoFromToken } = require("../../middlewares/auth");
 const {
@@ -36,4 +38,6 @@ router.post("/createupvote", getUserInfoFromToken, createUpVote);
 router.post("/createdownvote", getUserInfoFromToken, createDownVote);
 router.get("/getupvote", getUpVote);
 router.get("/getdownvote", getDownVote);
+router.post("/createcomment", getUserInfoFromToken, createComment);
+router.get("/comment", getComment);
 module.exports = router;
