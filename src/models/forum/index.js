@@ -8,6 +8,7 @@ const forumQuestionSchema = new mongoose.model(
       category: { type: String, trim: true },
       subCategory: { type: String, trim: true },
       userId: { type: String, trim: true },
+      tags: { type: Array, trim: true },
     },
     {
       timestamps: true,
@@ -67,10 +68,19 @@ const commentSchema = new mongoose.model(
   )
 );
 
+const saveQuestionSchema = new mongoose.model(
+  "saveQuestion",
+  mongoose.Schema({
+    userId: { type: String, trim: true },
+    questionId: { type: String, trim: true },
+  })
+);
+
 module.exports = {
   forumQuestionSchema,
   forumAnswerSchema,
   upVoteSchema,
   downVoteSchema,
   commentSchema,
+  saveQuestionSchema,
 };

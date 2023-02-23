@@ -17,6 +17,10 @@ const validateInfo = async (req, res, next) => {
     res.status(httpStatus.notAcceptable).send({
       message: "Select Sub Category",
     });
+  } else if (req.body.tags.length < 1) {
+    res.status(httpStatus.notAcceptable).send({
+      message: "Enter Tags",
+    });
   } else {
     next();
   }

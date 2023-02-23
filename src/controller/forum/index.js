@@ -5,6 +5,7 @@ const {
   upVoteSchema,
   downVoteSchema,
   commentSchema,
+  saveQuestionSchema,
 } = require("../../models/forum");
 
 const getAllForum = async (req, res) => {
@@ -129,7 +130,6 @@ const getUpVote = async (req, res) => {
   await upVoteSchema
     .find({ questionId: req.headers.questionid })
     .then((payload) => {
-      console.log(payload);
       res.status(httpStatus.accepted).send({
         data: payload.length,
       });
@@ -170,6 +170,58 @@ const getComment = async (req, res) => {
     })
     .catch((err) => res.status(httpStatus.notFound).send({ error: err }));
 };
+
+const getCommentById = async (req, res) => {
+  await commentSchema
+    .findOne({ _id: req.headers.prevanswerid })
+    .then((payload) => {
+      res.status(httpStatus.ok).send({
+        data: payload,
+      });
+    });
+};
+
+const saveQuestion = async (req, res) => {
+  req.body.userId = req.user._id;
+  await saveQuestionSchema
+    .findOne({ questionId: req.body.questionId })
+    .then(async (question) => {
+      if (!question) {
+        const addQuestion = await saveQuestionSchema(req.body);
+        addQuestion
+          .save()
+          .then((payload) => {
+            res.status(httpStatus.created).send({
+              message: "Saved Question",
+              data: payload,
+            });
+          })
+          .catch((err) => res.status(httpStatus.notFound).send({ error: err }));
+      } else {
+        res.status(httpStatus.ok).send({
+          message: "Already Saved",
+        });
+      }
+    })
+    .catch((err) => res.status(httpStatus.notFound).send({ error: err }));
+};
+
+const getSaveQuestions = async (req, res) => {
+  await saveQuestionSchema
+    .find({ userId: { $in: req.user._id } })
+    .then((payload) => {
+      const questionData = payload.map((e) => e.questionId);
+      forumQuestionSchema
+        .find({ _id: questionData })
+        .then((data) => {
+          res.status(httpStatus.accepted).send({
+            data,
+          });
+        })
+        .catch((err) => res.status(httpStatus.notFound).send({ error: err }));
+    })
+    .catch((err) => res.status(httpStatus.notFound).send({ error: err }));
+};
 module.exports = {
   getAllForum,
   create,
@@ -185,4 +237,7 @@ module.exports = {
   getUpVote,
   createComment,
   getComment,
+  saveQuestion,
+  getSaveQuestions,
+  getCommentById,
 };

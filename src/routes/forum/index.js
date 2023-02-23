@@ -14,6 +14,9 @@ const {
   getDownVote,
   createComment,
   getComment,
+  saveQuestion,
+  getSaveQuestions,
+  getCommentById,
 } = require("../../controller/forum");
 const { getUserInfoFromToken } = require("../../middlewares/auth");
 const {
@@ -40,4 +43,8 @@ router.get("/getupvote", getUpVote);
 router.get("/getdownvote", getDownVote);
 router.post("/createcomment", getUserInfoFromToken, createComment);
 router.get("/comment", getComment);
+router.get("/getcomment", getCommentById);
+router.post("/savequestion", getUserInfoFromToken, saveQuestion);
+router.get("/savequestion", getUserInfoFromToken, getSaveQuestions);
+
 module.exports = router;
