@@ -106,7 +106,7 @@ const checkUserName = async (req, res, next) => {
 const getUserInfoFromToken = async (req, res, next) => {
   if (req.headers.token) {
     await jwt.verify(req.headers.token, jwtKey, async (err, payload) => {
-      if (payload._id) {
+      if (payload?._id) {
         await authSchema.findOne({ _id: payload._id }).then((user) => {
           req.user = user;
           next();
